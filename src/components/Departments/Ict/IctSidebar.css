@@ -1,0 +1,8 @@
+.active {
+    background-color: white;
+    color: red;
+}
+
+.link-Hover:hover {
+    color: #000;
+}

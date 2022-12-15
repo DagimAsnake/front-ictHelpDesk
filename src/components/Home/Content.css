@@ -1,0 +1,8 @@
+.textSize {
+    font-size: 120px;
+    text-shadow: rgb(82, 236, 35) 1px 0 10px;
+}
+
+.textShadow {
+    text-shadow: rgb(82, 236, 35) 1px 0 10px;
+}
