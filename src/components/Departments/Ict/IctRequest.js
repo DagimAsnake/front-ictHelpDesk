@@ -1,19 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import DepAuthContext from "../../Store/Dep-authContext";
 
 function IctRequest() {
+  const depAuthCtx = useContext(DepAuthContext);
+
   const [requestData, setRequestData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const datafetch = async () => {
-      const response = await fetch("https://ict-help-desk.onrender.com/task");
+      const response = await fetch("http://localhost:8080/task", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + depAuthCtx.token,
+        },
+      });
       const data = await response.json();
       setRequestData(data.msg);
       setIsLoading(false);
     };
     datafetch();
-  }, []);
+  }, [depAuthCtx]);
 
   return (
     <div className="pt-5 offset-2">
@@ -24,6 +32,9 @@ function IctRequest() {
             <hr className="success"></hr>
 
             {isLoading && <h3>Loading.....</h3>}
+            {!isLoading && requestData.length <= 0 && (
+              <h3 className="mt-5 pt-5">There are no request for now.</h3>
+            )}
 
             {!isLoading &&
               requestData.map((request) => {
@@ -76,11 +87,9 @@ function IctRequest() {
                             {" "}
                             <b>Task type-</b> {request.taskType}{" "}
                             <Link
-                              to=""
+                              to={`/ict/request/${request._id}`}
                               role="button"
                               className="btn btn-success btn-sm rounded-pill py-0"
-                              data-bs-toggle="modal"
-                              data-bs-target="#ictDetails"
                             >
                               {" "}
                               Details
@@ -91,21 +100,17 @@ function IctRequest() {
                       <div className="row g-0 mb-3">
                         <div className="col-4 offset-8">
                           <Link
-                            to=""
+                            to={`/ict/assign/${request._id}`}
                             role="button"
                             className="btn btn-outline-success ms-5"
-                            data-bs-toggle="modal"
-                            data-bs-target="#ictAssign"
                           >
                             {" "}
                             Assign To{" "}
                           </Link>
                           <Link
-                            to=""
+                            to={`/ict/${request._id}/decline`}
                             role="button"
                             className="btn btn-outline-success ms-5"
-                            data-bs-toggle="modal"
-                            data-bs-target="#ictDecline"
                           >
                             {" "}
                             Decline{" "}

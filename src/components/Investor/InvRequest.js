@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import InvAuthContext from "../Store/Inv-authContext";
 
 function InvRequest() {
+  const invAuthCtx = useContext(InvAuthContext);
+
   const [invName, setInvName] = useState("");
   const [workLoc, setWorkLoc] = useState("");
   const [name, setName] = useState("");
@@ -14,33 +17,38 @@ function InvRequest() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
+  const [alertResponse, setAlertResponse] = useState(false);
+  const [msg, setMsg] = useState("");
+
   const formSubmitHandler = (event) => {
     event.preventDefault();
 
     const addrequest = async () => {
-      const response = await fetch(
-        "https://ict-help-desk.onrender.com/task/post",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            companyName: invName,
-            description: desc,
-            priority: priority,
-            taskType: category,
-            location: workLoc,
-            contact_person_phone: phone,
-            contact_person_name: name,
-            requested_date: date,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch("http://localhost:8080/task/post", {
+        method: "POST",
+        body: JSON.stringify({
+          companyName: invName,
+          description: desc,
+          priority: priority,
+          taskType: category,
+          location: workLoc,
+          contact_person_phone: phone,
+          contact_person_name: name,
+          requested_date: date,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + invAuthCtx.token,
+        },
+      });
 
       if (!response.ok) {
         console.log("something is wrong");
       }
+
+      const data = await response.json();
+      setMsg(data.msg);
+      setAlertResponse(true);
     };
 
     addrequest();
@@ -329,6 +337,22 @@ function InvRequest() {
               </div>
             </div>
           </form>
+          <div className="offset-3 col-4">
+            {alertResponse && (
+              <div
+                className="alert alert-success alert-dismissible fade show"
+                role="alert"
+              >
+                {msg}
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"
+                ></button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

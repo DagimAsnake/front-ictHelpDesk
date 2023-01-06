@@ -1,21 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Kena from "../../../assets/kena.jpg";
+import DepAuthContext from "../../Store/Dep-authContext";
+import { useParams } from "react-router-dom";
 
-function Employee() {
+function AssignTo() {
+  const { taskid } = useParams();
+
+  const depAuthCtx = useContext(DepAuthContext);
+
   const [requestEmployee, setRequestEmployee] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  //   const [task, setTask] = useState([]);
+
   useEffect(() => {
     const fetchEmployee = async () => {
+      //   const ta = await fetch(`http://localhost:8080/task/view/` + id, {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: "Bearer " + depAuthCtx.token,
+      //     },
+      //   });
+      //   const taData = await ta.json();
+      //   console.log(taData);
       const response = await fetch("http://localhost:8080/user");
       const data = await response.json();
       console.log(data);
       setRequestEmployee(data.msg);
       setIsLoading(false);
+      console.log(taskid);
     };
     fetchEmployee();
-  }, []);
+  }, [depAuthCtx, taskid]);
 
   return (
     <div className="pt-5 offset-2">
@@ -31,6 +48,7 @@ function Employee() {
             )}
             {!isLoading &&
               requestEmployee.map((Employee) => {
+                console.log(Employee._id);
                 return (
                   <div className="row" key={Employee.id}>
                     <div className="col-1 ms-5">
@@ -56,13 +74,11 @@ function Employee() {
                     </div>
                     <div className="col ms-3">
                       <Link
-                        to=""
+                        to={`/ict/assign/${taskid}/${Employee._id}`}
                         role="button"
                         className="btn btn-outline-success"
-                        data-bs-toggle="modal"
-                        data-bs-target="#ictEmployeeDetails"
                       >
-                        Details
+                        Assign Task
                       </Link>
                     </div>
                     <hr />
@@ -76,4 +92,4 @@ function Employee() {
   );
 }
 
-export default Employee;
+export default AssignTo;

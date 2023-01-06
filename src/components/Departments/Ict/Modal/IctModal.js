@@ -2,7 +2,6 @@ import React from "react";
 import AssignModal from "./AssignModal";
 import DeclineModal from "./DeclineModal";
 import EmpDetails from "./EmpDetails";
-import DetailsModal from "./DetailsModal";
 
 function IctModal() {
   return (
@@ -10,7 +9,6 @@ function IctModal() {
       <AssignModal />
       <DeclineModal />
       <EmpDetails />
-      <DetailsModal />
     </>
   );
 }
