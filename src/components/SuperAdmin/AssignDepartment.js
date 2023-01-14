@@ -1,29 +1,32 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import Kena from "../../../assets/kena.jpg";
-import DepAuthContext from "../../Store/Dep-authContext";
+import EmpAuthContext from "../Store/Emp-authContext";
+import { useParams } from "react-router-dom";
 
-function Employee() {
-  const depAuthCtx = useContext(DepAuthContext);
+function AssignDepartment() {
+  const { taskId } = useParams();
+
+  const empAuthCtx = useContext(EmpAuthContext);
 
   const [requestEmployee, setRequestEmployee] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchEmployee = async () => {
-      const response = await fetch("http://localhost:8080/user", {
+      const response = await fetch("http://localhost:8080/user/department", {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + depAuthCtx.token,
+          Authorization: "Bearer " + empAuthCtx.token,
         },
       });
       const data = await response.json();
       console.log(data);
       setRequestEmployee(data.msg);
       setIsLoading(false);
+      console.log(taskId);
     };
     fetchEmployee();
-  }, [depAuthCtx]);
+  }, [empAuthCtx, taskId]);
 
   return (
     <div className="pt-5 offset-2">
@@ -35,42 +38,26 @@ function Employee() {
             </h2>
             {isLoading && <h3>Loading......</h3>}
             {!isLoading && requestEmployee.length <= 0 && (
-              <h3 className="mt-5">There are no Employees.</h3>
+              <h3 className="mt-5">There are no Departments.</h3>
             )}
             {!isLoading &&
-              requestEmployee.map((Employee) => {
+              requestEmployee?.map((Employee) => {
+                console.log(Employee.id);
                 return (
                   <div className="row" key={Employee.id}>
-                    <div className="col-1 ms-5">
-                      <img src={Kena} alt="profile" className="circles" />
-                    </div>
                     <div className="col">
                       <p>
-                        <b className="fw-bolder">
-                          {Employee.firstName} {Employee.lastName}
-                        </b>
+                        <b className="fw-bolder">{Employee.title}</b>
                         {/* <p>{Employee.position}</p> */}
                       </p>
                     </div>
                     <div className="col ms-3">
-                      <p>
-                        <b className="fw-bolder text-center">Rating</b>
-                        <p
-                          className="starability-result ms-5"
-                          //   data-rating={Employee.rating}
-                          data-rating={0}
-                        ></p>
-                      </p>
-                    </div>
-                    <div className="col ms-3">
                       <Link
-                        to=""
+                        to={`/superadmin/assign/${taskId}/${Employee.id}`}
                         role="button"
                         className="btn btn-outline-success"
-                        data-bs-toggle="modal"
-                        data-bs-target="#ictEmployeeDetails"
                       >
-                        Details
+                        Assign Task
                       </Link>
                     </div>
                     <hr />
@@ -84,4 +71,4 @@ function Employee() {
   );
 }
 
-export default Employee;
+export default AssignDepartment;

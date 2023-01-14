@@ -37,7 +37,6 @@ function EscalateTask() {
         <div className="row">
           <div className="col-9 offset-2 text-center mt-5">
             <h2>{requestData}</h2>
-            <hr className="success"></hr>
           </div>
         </div>
       </div>

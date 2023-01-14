@@ -24,6 +24,9 @@ import InvSidebar from "./components/Investor/InvSidebar";
 import InvNavbar from "./components/Investor/InvNavbar";
 import InvRequest from "./components/Investor/InvRequest";
 import InvReport from "./components/Investor/InvReport";
+import MyRequests from "./components/Investor/MyRequests";
+import DetailInvRequest from "./components/Investor/DetailRequest";
+import Completed from "./components/Investor/Completed";
 import RegEmployee from "./components/Auth/RegEmployee";
 import RegisterInvestor from "./components/Auth/RegisterInvestor";
 import RegDepartment from "./components/Auth/RegDepartment";
@@ -31,6 +34,13 @@ import LogEmployee from "./components/Auth/LogEmployee";
 import Loginvestor from "./components/Auth/LogInvestor";
 import LogDepartment from "./components/Auth/LogDepartment";
 import AsToResponse from "./components/Departments/Ict/AsToResponse";
+import SupNavbar from "./components/SuperAdmin/SupNavbar";
+import SupSidebar from "./components/SuperAdmin/SupSidebar";
+import DeclineTasks from "./components/SuperAdmin/DeclineTasks";
+import DetailsDecline from "./components/SuperAdmin/DetailsDecline";
+import Departments from "./components/SuperAdmin/Departments";
+import AssignDepartment from "./components/SuperAdmin/AssignDepartment";
+import AsToDepartment from "./components/SuperAdmin/AsToDepartment";
 
 function App() {
   const invAuthCtx = useContext(InvAuthContext);
@@ -221,9 +231,156 @@ function App() {
             </>
           }
         />
-        <Route path="/register" element={<RegEmployee />} />
-        <Route path="/register/investor" element={<RegisterInvestor />} />
-        <Route path="/register/department" element={<RegDepartment />} />
+        <Route
+          path="/investor/myrequest"
+          element={
+            <>
+              {invAuthCtx.isInvLoggedIn && (
+                <>
+                  <InvSidebar /> <InvNavbar /> <MyRequests />
+                </>
+              )}
+              {!invAuthCtx.isInvLoggedIn && <Loginvestor />}
+            </>
+          }
+        />
+        <Route
+          path="/investor/myrequest/:id"
+          element={
+            <>
+              {invAuthCtx.isInvLoggedIn && (
+                <>
+                  <InvSidebar /> <InvNavbar /> <DetailInvRequest />
+                </>
+              )}
+              {!invAuthCtx.isInvLoggedIn && <Loginvestor />}
+            </>
+          }
+        />
+        <Route
+          path="/investor/:id"
+          element={
+            <>
+              {invAuthCtx.isInvLoggedIn && (
+                <>
+                  <InvSidebar /> <InvNavbar /> <Completed />
+                </>
+              )}
+              {!invAuthCtx.isInvLoggedIn && <Loginvestor />}
+            </>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <>
+              {depAuthCtx.isDepLoggedIn && (
+                <>
+                  <IctModal /> <Ictsidebar /> <IctNavbar /> <RegEmployee />
+                </>
+              )}
+              {!depAuthCtx.isDepLoggedIn && <LogDepartment />}
+            </>
+          }
+        />
+        <Route
+          path="/register/investor"
+          element={
+            <>
+              {empAuthCtx.isEmpLoggedIn && (
+                <>
+                  <SupNavbar /> <SupSidebar />
+                  <RegisterInvestor />
+                </>
+              )}
+              {!empAuthCtx.isEmpLoggedIn && <LogEmployee />}
+            </>
+          }
+        />
+        <Route
+          path="/register/department"
+          element={
+            <>
+              {empAuthCtx.isEmpLoggedIn && (
+                <>
+                  <SupNavbar /> <SupSidebar />
+                  <RegDepartment />
+                </>
+              )}
+              {!empAuthCtx.isEmpLoggedIn && <LogEmployee />}
+            </>
+          }
+        />
+        <Route
+          path="/superadmin/tasks"
+          element={
+            <>
+              {empAuthCtx.isEmpLoggedIn && (
+                <>
+                  <SupNavbar /> <SupSidebar />
+                  <DeclineTasks />
+                </>
+              )}
+              {!empAuthCtx.isEmpLoggedIn && <LogEmployee />}
+            </>
+          }
+        />
+        <Route
+          path="/superadmin/task/:id"
+          element={
+            <>
+              {empAuthCtx.isEmpLoggedIn && (
+                <>
+                  <SupNavbar /> <SupSidebar />
+                  <DetailsDecline />
+                </>
+              )}
+              {!empAuthCtx.isEmpLoggedIn && <LogEmployee />}
+            </>
+          }
+        />
+        <Route
+          path="/superadmin/departments"
+          element={
+            <>
+              {empAuthCtx.isEmpLoggedIn && (
+                <>
+                  <SupNavbar /> <SupSidebar />
+                  <Departments />
+                </>
+              )}
+              {!empAuthCtx.isEmpLoggedIn && <LogEmployee />}
+            </>
+          }
+        />
+        <Route
+          path="/superadmin/assign/:taskId"
+          element={
+            <>
+              {empAuthCtx.isEmpLoggedIn && (
+                <>
+                  <SupNavbar /> <SupSidebar />
+                  <AssignDepartment />
+                </>
+              )}
+              {!empAuthCtx.isEmpLoggedIn && <LogEmployee />}
+            </>
+          }
+        />
+        <Route
+          path="/superadmin/assign/:taskId/:depId"
+          element={
+            <>
+              {empAuthCtx.isEmpLoggedIn && (
+                <>
+                  <SupNavbar /> <SupSidebar />
+                  <AsToDepartment />
+                </>
+              )}
+              {!empAuthCtx.isEmpLoggedIn && <LogEmployee />}
+            </>
+          }
+        />
       </Routes>
     </>
   );

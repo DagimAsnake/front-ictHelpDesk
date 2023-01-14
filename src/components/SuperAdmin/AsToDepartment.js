@@ -1,22 +1,22 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import DepAuthContext from "../../Store/Dep-authContext";
+import EmpAuthContext from "../Store/Emp-authContext";
 
-function AsToResponse() {
-  const depAuthCtx = useContext(DepAuthContext);
+function AsToDepartment() {
+  const empAuthCtx = useContext(EmpAuthContext);
 
-  const { taskid, userid } = useParams();
+  const { taskId, depId } = useParams();
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const AssignedTask = async () => {
       const response = await fetch(
-        `http://localhost:8080/task/${taskid}/${userid}`,
+        `http://localhost:8080/user/${taskId}/${depId}`,
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + depAuthCtx.token,
+            Authorization: "Bearer " + empAuthCtx.token,
           },
         }
       );
@@ -26,11 +26,12 @@ function AsToResponse() {
       const data = await response.json();
 
       console.log(data);
+      console.log(depId);
       setIsLoading(false);
     };
 
     AssignedTask();
-  }, [taskid, userid, depAuthCtx]);
+  }, [taskId, depId, empAuthCtx]);
   return (
     <>
       <div className="pt-5 offset-2">
@@ -47,4 +48,4 @@ function AsToResponse() {
   );
 }
 
-export default AsToResponse;
+export default AsToDepartment;

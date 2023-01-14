@@ -1,17 +1,20 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import InvAuthContext from "../Store/Inv-authContext";
 
 function InvRequest() {
   const invAuthCtx = useContext(InvAuthContext);
+
+  const navigate = useNavigate();
 
   const [invName, setInvName] = useState("");
   const [workLoc, setWorkLoc] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [category, setCategory] = useState("");
-  //   const [ict, setIct] = useState("Internet Service");
-  //   const [facility, setFacility] = useState("General Maintenance");
-  //   const [investor, setInvestor] = useState("Make Promotion");
+  // const [ict, setIct] = useState("Internet Service");
+  // const [facility, setFacility] = useState("General Maintenance");
+  // const [investor, setInvestor] = useState("Make Promotion");
   const [desc, setDesc] = useState("");
   const [priority, setPriority] = useState("");
   const [date, setDate] = useState("");
@@ -35,6 +38,7 @@ function InvRequest() {
           contact_person_phone: phone,
           contact_person_name: name,
           requested_date: date,
+          department: category,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -49,6 +53,10 @@ function InvRequest() {
       const data = await response.json();
       setMsg(data.msg);
       setAlertResponse(true);
+
+      if (data.msg === "Task submitted Successfully") {
+        navigate("/investor/myrequest");
+      }
     };
 
     addrequest();
@@ -76,7 +84,7 @@ function InvRequest() {
                 <h4>Requester Information</h4>
                 <div className="mb-3">
                   <label htmlFor="invName" className="form-label">
-                    Name of Requesting party (Tenant or Investor)
+                    Name of Requesting Company (Tenant or Investor)
                   </label>
                   <input
                     type="text"

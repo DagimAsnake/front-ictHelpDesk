@@ -15,9 +15,10 @@ function DeclineTask() {
 
     const DeclineHandler = async () => {
       const response = await fetch(`http://localhost:8080/task/${id}/decline`, {
-        // body: JSON.stringify({
-        //   reason: reason,
-        // }),
+        method: "POST",
+        body: JSON.stringify({
+          reason: reason,
+        }),
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + depAuthCtx.token,
@@ -33,8 +34,6 @@ function DeclineTask() {
 
     DeclineHandler();
   };
-
-  console.log(requestData);
 
   return (
     <div className="pt-5 offset-2">

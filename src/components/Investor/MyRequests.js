@@ -1,54 +1,49 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import DepAuthContext from "../../Store/Dep-authContext";
+import InvAuthContext from "../Store/Inv-authContext";
 
-function Request() {
-  const depAuthCtx = useContext(DepAuthContext);
+function MyRequests() {
+  const invAuthCtx = useContext(InvAuthContext);
 
-  const [requestData, setRequestData] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const singleFetch = async () => {
+    const datafetch = async () => {
       const response = await fetch(
-        `http://localhost:8080/department/escalated`,
+        "http://localhost:8080/report/viewcompletedtask",
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + depAuthCtx.token,
+            Authorization: "Bearer " + invAuthCtx.token,
           },
         }
       );
-      if (!response.ok) {
-        console.log("Something went wrong");
-      }
       const data = await response.json();
-
-      setRequestData(data.msg);
+      setTasks(data.msg);
       setIsLoading(false);
+      console.log(data);
     };
-
-    singleFetch();
-  }, [depAuthCtx]);
+    datafetch();
+  }, [invAuthCtx]);
 
   return (
     <div className="pt-5 offset-2">
       <div className="container mb-5">
         <div className="row">
           <div className="col-9 offset-2 text-center mt-5">
-            <h2>Escalated Tasks</h2>
+            <h2>Your Requests</h2>
             <hr className="success"></hr>
+
             {isLoading && <h3>Loading.....</h3>}
-            {!isLoading && requestData.length <= 0 && (
-              <h3 className="mt-5 pt-5">
-                There are no Escalated tasks for now.
-              </h3>
+            {!isLoading && tasks.length <= 0 && (
+              <h3 className="mt-5 pt-5">You haven't made any request yet.</h3>
             )}
 
             {!isLoading &&
-              requestData.map((escalated) => {
+              tasks.map((task) => {
                 return (
-                  <div className="row shadow bg-light my-5" key={escalated.id}>
+                  <div className="row shadow bg-light my-5" key={task.id}>
                     <div className="col-12">
                       <div
                         className="row rounded mx-1"
@@ -56,7 +51,7 @@ function Request() {
                       >
                         <div className="col-7">
                           <p className="navbar-brand text-white text-start">
-                            Escalated from- Employee name, position
+                            Task-1
                           </p>
                         </div>
                         <div className="col-3">
@@ -73,16 +68,16 @@ function Request() {
                         <div className="col-4 text-start ms-4">
                           <p>
                             {" "}
-                            <b>Company name-</b> {escalated.companyName}{" "}
+                            <b>Company name-</b> {task.companyName}{" "}
                           </p>
                         </div>
-                        <div className="col">
+                        <div className="col text-center">
                           <p>
                             {" "}
                             <b>Task priority-</b>{" "}
                             <button className="btn btn-warning btn-sm rounded-pill py-0">
                               {" "}
-                              {escalated.priority}{" "}
+                              {task.priority}{" "}
                             </button>
                           </p>
                         </div>
@@ -91,36 +86,27 @@ function Request() {
                         <div className="col-4 text-start ms-4">
                           <p>
                             {" "}
-                            <b>Task type-</b>
-                            {escalated.type}{" "}
-                            <Link
-                              to={`/ict/request/${escalated._id}`}
-                              role="button"
-                              className="btn btn-success btn-sm rounded-pill py-0"
-                            >
-                              {" "}
-                              Details
-                            </Link>
+                            <b>Task type-</b> {task.taskType}{" "}
                           </p>
                         </div>
                       </div>
                       <div className="row g-0 mb-3">
                         <div className="col-4 offset-8">
                           <Link
-                            to={`/ict/assign/${escalated._id}`}
+                            to={`/investor/myrequest/${task._id}`}
                             role="button"
                             className="btn btn-outline-success ms-5"
                           >
                             {" "}
-                            Assign To
+                            Details{" "}
                           </Link>
                           <Link
-                            to={`/ict/${escalated._id}/decline`}
+                            to={`/investor/${task._id}`}
                             role="button"
                             className="btn btn-outline-success ms-5"
                           >
                             {" "}
-                            Decline{" "}
+                            Completed{" "}
                           </Link>
                         </div>
                       </div>
@@ -135,4 +121,4 @@ function Request() {
   );
 }
 
-export default Request;
+export default MyRequests;

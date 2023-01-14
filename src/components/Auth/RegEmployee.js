@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+
+import DepAuthContext from "../Store/Dep-authContext";
 
 function Register() {
+  const depAuthCtx = useContext(DepAuthContext);
+
   const [username, setUsername] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("Employee");
+
+  const [alertResponse, setAlertResponse] = useState(false);
+  const [msg, setMsg] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -24,6 +31,7 @@ function Register() {
         }),
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + depAuthCtx.token,
         },
       });
 
@@ -32,6 +40,8 @@ function Register() {
       }
 
       const data = await response.json();
+      setAlertResponse(true);
+      setMsg(data.msg);
       console.log(data);
     };
 
@@ -39,7 +49,7 @@ function Register() {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center my-5">
+    <div className="container d-flex justify-content-center align-items-center my-5 offset-3">
       <div className="row">
         <div className="col-md-9 offset-md-3 col-xl-10 offset-xl-1 ">
           <div className="card shadow">
@@ -189,6 +199,22 @@ function Register() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="offset-3 col-4">
+        {alertResponse && (
+          <div
+            className="alert alert-success alert-dismissible fade show"
+            role="alert"
+          >
+            {msg}
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+        )}
       </div>
     </div>
   );

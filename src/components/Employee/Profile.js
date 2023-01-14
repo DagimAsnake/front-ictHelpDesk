@@ -55,7 +55,7 @@ function Profile() {
                   {profile.firstName} {profile.lastName}
                 </h2>
                 <p className="ps-4">Senior It Technician</p>
-                <p className="starability-result" data-rating="2"></p>
+                <p className="starability-result" data-rating={0}></p>
               </div>
             </div>
           </div>

@@ -12,19 +12,14 @@ function AssignTo() {
   const [requestEmployee, setRequestEmployee] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  //   const [task, setTask] = useState([]);
-
   useEffect(() => {
     const fetchEmployee = async () => {
-      //   const ta = await fetch(`http://localhost:8080/task/view/` + id, {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Authorization: "Bearer " + depAuthCtx.token,
-      //     },
-      //   });
-      //   const taData = await ta.json();
-      //   console.log(taData);
-      const response = await fetch("http://localhost:8080/user");
+      const response = await fetch("http://localhost:8080/user", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + depAuthCtx.token,
+        },
+      });
       const data = await response.json();
       console.log(data);
       setRequestEmployee(data.msg);
@@ -47,7 +42,7 @@ function AssignTo() {
               <h3 className="mt-5">There are no Employees.</h3>
             )}
             {!isLoading &&
-              requestEmployee.map((Employee) => {
+              requestEmployee?.map((Employee) => {
                 console.log(Employee._id);
                 return (
                   <div className="row" key={Employee.id}>
@@ -68,7 +63,7 @@ function AssignTo() {
                         <p
                           className="starability-result ms-5"
                           //   data-rating={Employee.rating}
-                          data-rating={3}
+                          data-rating={0}
                         ></p>
                       </p>
                     </div>
