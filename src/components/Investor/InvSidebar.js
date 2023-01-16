@@ -72,6 +72,20 @@ function InvSidebar() {
       </NavLink>
 
       <NavLink
+        to="/investor/completedRequest"
+        role="button"
+        className={(navData) =>
+          navData.isActive
+            ? "active text-dark text-decoration-none ms-5 btn btn-lg btn-outline-light mt-4 px-4 rounded-5"
+            : "text-white ms-5 btn btn-lg btn-outline-light mt-4 px-4 rounded-5"
+        }
+      >
+        <span className="link-Hover">
+          Completed Request <i className="bi bi-gear-fill"></i>
+        </span>
+      </NavLink>
+
+      <NavLink
         to="/investor/setting"
         role="button"
         className={(navData) =>

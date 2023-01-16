@@ -40,7 +40,7 @@ function Employee() {
             {!isLoading &&
               requestEmployee.map((Employee) => {
                 return (
-                  <div className="row" key={Employee.id}>
+                  <div className="row" key={Employee._id}>
                     <div className="col-1 ms-5">
                       <img src={Kena} alt="profile" className="circles" />
                     </div>
@@ -64,11 +64,9 @@ function Employee() {
                     </div>
                     <div className="col ms-3">
                       <Link
-                        to=""
+                        to={`/ict/${Employee._id}`}
                         role="button"
                         className="btn btn-outline-success"
-                        data-bs-toggle="modal"
-                        data-bs-target="#ictEmployeeDetails"
                       >
                         Details
                       </Link>

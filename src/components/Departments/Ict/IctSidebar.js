@@ -98,6 +98,20 @@ function Ictsidebar() {
       </NavLink>
 
       <NavLink
+        to="/ict/allhistory"
+        role="button"
+        className={(navData) =>
+          navData.isActive
+            ? "active text-dark text-decoration-none ms-5 btn btn-lg btn-outline-light mt-4 px-4 rounded-5"
+            : "text-white ms-5 btn btn-lg btn-outline-light mt-4 px-4 rounded-5"
+        }
+      >
+        <span className="link-Hover">
+          All History <i className="bi bi-card-list"></i>
+        </span>
+      </NavLink>
+
+      <NavLink
         to="/ict/setting"
         role="button"
         className={(navData) =>

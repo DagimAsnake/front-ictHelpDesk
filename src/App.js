@@ -7,6 +7,8 @@ import EmpModal from "./components/Employee/Modal/EmpModal";
 import IctModal from "./components/Departments/Ict/Modal/IctModal";
 import EmpSidebar from "./components/Employee/EmpSidebar";
 import EmpNavbar from "./components/Employee/EmpNavbar";
+import EmployeeDetails from "./components/Departments/Ict/EmployeeDetails";
+import Allhistory from "./components/Departments/Ict/Allhistory";
 import Profile from "./components/Employee/Profile";
 import Task from "./components/Employee/Task";
 import DetailTask from "./components/Employee/DetailTask";
@@ -27,6 +29,7 @@ import InvReport from "./components/Investor/InvReport";
 import MyRequests from "./components/Investor/MyRequests";
 import DetailInvRequest from "./components/Investor/DetailRequest";
 import Completed from "./components/Investor/Completed";
+import RequestCompleted from "./components/Investor/RequestCompleted";
 import RegEmployee from "./components/Auth/RegEmployee";
 import RegisterInvestor from "./components/Auth/RegisterInvestor";
 import RegDepartment from "./components/Auth/RegDepartment";
@@ -202,6 +205,32 @@ function App() {
           }
         />
         <Route
+          path="/ict/:empId"
+          element={
+            <>
+              {depAuthCtx.isDepLoggedIn && (
+                <>
+                  <IctModal /> <Ictsidebar /> <IctNavbar /> <EmployeeDetails />
+                </>
+              )}
+              {!depAuthCtx.isDepLoggedIn && <LogDepartment />}
+            </>
+          }
+        />
+        <Route
+          path="/ict/allhistory"
+          element={
+            <>
+              {depAuthCtx.isDepLoggedIn && (
+                <>
+                  <IctModal /> <Ictsidebar /> <IctNavbar /> <Allhistory />
+                </>
+              )}
+              {!depAuthCtx.isDepLoggedIn && <LogDepartment />}
+            </>
+          }
+        />
+        <Route
           path="/investor/request"
           element={
             <>
@@ -264,6 +293,19 @@ function App() {
               {invAuthCtx.isInvLoggedIn && (
                 <>
                   <InvSidebar /> <InvNavbar /> <Completed />
+                </>
+              )}
+              {!invAuthCtx.isInvLoggedIn && <Loginvestor />}
+            </>
+          }
+        />
+        <Route
+          path="/investor/completedRequest"
+          element={
+            <>
+              {invAuthCtx.isInvLoggedIn && (
+                <>
+                  <InvSidebar /> <InvNavbar /> <RequestCompleted />
                 </>
               )}
               {!invAuthCtx.isInvLoggedIn && <Loginvestor />}
